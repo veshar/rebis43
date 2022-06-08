@@ -1,15 +1,15 @@
 import './App.css';
-import NavBar from './components/NavBar/NavBar.js';
+import NavBar from './components/NavBar/NavBar.jsx';
+import ItemListContainer from './components/ItemListContainer/ItemListContainer.jsx';
 
 function App() {
   return <>
 
     <div className="App">
-    <header className="header">
-        
-        <h1>Rebis 43</h1>
-    </header>
     <NavBar />
+
+  
+    <ItemListContainer />
     </div>
     </>;
 }
