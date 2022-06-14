@@ -1,10 +1,10 @@
 
-  .nav-main {
+.nav-main {
     color: rgb(255, 235, 147);
     font-size: 20px;
   }
 
-  .nav-list{
+.nav-list{
     list-style: none;
     display: flex;
     justify-content: space-around;
