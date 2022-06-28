@@ -4,36 +4,31 @@ import ItemDetail from '../ItemDetail/ItemDetail';
 import { useParams } from 'react-router-dom';
 
 
-const ItemDetailContainer = () => {
+const ItemDetailContainer = ({greeting}) => {
   const [product, setProduct] = useState({});
   const {itemId} = useParams();
 
-  useEffect(() => {
-    //apis, llamados al backend
-    const traerProducto = new Promise ((res, rej) => {
+  function traerProducto() {
+    return new Promise((resolve, reject) => {
+      const itemResult = productos.find((item) => item.id === parseInt(itemId));
       setTimeout(() => {
-        const itemFound = productos.find((ropa) =>{
-          return ropa.id === parseInt(itemId);
-        })
-        res(itemFound);
-      }, 2000);
-      });
-      //console.log(traerProductos)
-      traerProducto
+        resolve(itemResult);
+      }, 600);
+    });
+  }
+
+  useEffect(() => {
+    traerProducto()
       .then((res) => {
-        //console.log(res)
         setProduct(res);
       })
-      /*.catch((error)=>{
-        console.log(error)
-      })*/
-    },[itemId]);
-
-    //console.log(products);
-
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
     return (
       <div className='text-center container mx-auto mx-5'>
-      <div className='font-bold text-pink-600 text-4x1 mb-2'></div>
+      <div className='font-bold text-pink-600 text-4x1 mb-2'>{greeting}</div>
       <ItemDetail item={product} />
       </div>
     );

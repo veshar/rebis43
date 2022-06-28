@@ -22,6 +22,8 @@ function traerDatos(categoryId){
 
 const ItemListContainer = ({ greeting }) => {
   const [products, setProducts] = useState([]);
+
+  const [loadingData, setLoadingData] = useState(true);
   const { categoryId } = useParams();
 
   useEffect(() => {
