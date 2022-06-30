@@ -3,13 +3,15 @@ import NavBar from './components/NavBar/NavBar.jsx';
 import ItemListContainer from './components/ItemListContainer/ItemListContainer.jsx';
 import ItemDetailContainer from './components/ItemDetailContainer/ItemDetailContainer';
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
+
+import { CartContextProvider } from './context/CartContext';
 import { Cart } from './components/Cart/Cart';
-import ItemDetail from './components/ItemDetail/ItemDetail';
 
 function App() {
   return (
 
     <div className="App" mx-auto>
+      <CartContextProvider>
       <BrowserRouter>
         <NavBar />
         <Routes>
@@ -19,6 +21,7 @@ function App() {
           <Route path ="/cart" element={<Cart/>} />
         </Routes>
         </BrowserRouter>
+        </CartContextProvider>
     </div>
   );
 }
