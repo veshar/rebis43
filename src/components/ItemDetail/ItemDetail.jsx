@@ -1,21 +1,23 @@
 import { useState, useContext } from "react";
 import ItemCount from "../ItemCount/ItemCount";
 import { Link } from "react-router-dom";
-
 //7. Importamos el Hook useContext y el UserContext
 import cartContext from '../../context/CartContext';
+import ErrorMsg from "../ErrorMsg";
 
 
 function ItemDetail({ item }) {
   const [isInCart, setIsInCart] = useState(false);
 
   //8 importamos el VALUE del Context   
-  const { addToCart, cart } = useContext(cartContext);
+  const { addToCart, cart, isInCartContext } = useContext(cartContext);
 
   console.log(cart);
 
   function handleAddtoCart(cant) {
+    
     addToCart( item, cant )
+
     setIsInCart(true);
   }
 
@@ -33,11 +35,21 @@ function ItemDetail({ item }) {
 
         <p className="mt-5 mb-3 text-xs text-gray-500">{item.description}</p>
         <p className="mt-4 text-green-700 text-md font-bold">$ {item.price}</p>
-        {isInCart ? (
-          <Link to="/cart">Ir al carrito</Link>
-        ) : (
-          <ItemCount stock={item.stock} initial={1} onAdd={handleAddtoCart} />
-        )}
+
+        {/* -------------------- Rendering condicional -------------------- */}
+        {/* si no tenemos stock */}
+        {item.stock <= 0 && <ErrorMsg isWarning={true} text="No hay stock" />}
+
+        {/* si el item ya fue agregado al carrito  */}
+        {isInCart 
+        ?  <Link className="bg-green-500 py-2 px-8 rounded-md font-bold text-white" to="/cart">Ir al carrito</Link>
+        :  <ItemCount stock={item.stock} initial={1} onAdd={handleAddtoCart} />
+        }
+
+        {/* si el item fue agregado al Context (similar a anterior) */}
+        { isInCartContext(item.id) && <button  className="mt-3 bg-red-500 py-2 px-8 rounded-md font-bold text-white">
+          Remover del carrito
+          </button> }       
       </div>
     </div>
   );
