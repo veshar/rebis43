@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { productos } from "../../data/products";
 import ItemDetail from "../ItemDetail/ItemDetail";
 import { useParams } from "react-router-dom";
 import RotateLoader from 'react-spinners/RotateLoader'
 import ErrorMsg from "../ErrorMsg";
+import { traerUnProducto } from "../../services/firestore";
 
 const ItemDetailContainer = ({ greeting }) => {
   const [product, setProduct] = useState({});
@@ -12,32 +12,15 @@ const ItemDetailContainer = ({ greeting }) => {
 
   const { itemId } = useParams();
 
-  function traerProducto() {
-    return new Promise((resolve, reject) => {
-      const itemResult = productos.find((item) => item.id === parseInt(itemId));
-      setTimeout(() => {
-        if (itemResult === undefined) {         
-          reject(new Error("No se encontró el producto"));
-        }
 
-       resolve(itemResult);
-      },1500);
-    });
-  }
 
   useEffect(() => {
-    traerProducto()
+    traerUnProducto(itemId)
       .then((res) => {
         setProduct(res);        
       })
-      .catch((error) => {
-        console.error(error);
-        setIsError(error.message);        
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+  
+  }, [itemId]);
 
   if(isLoading){
     return (

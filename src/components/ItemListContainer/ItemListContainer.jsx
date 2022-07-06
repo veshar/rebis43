@@ -2,30 +2,33 @@ import React, { useState, useEffect } from "react";
 import { productos } from "../../data/products";
 import ItemList from "../ItemList/ItemList";
 import RotateLoader from 'react-spinners/RotateLoader'
+import { traerProductos, traerProductosDeCategoria } from "../../services/firestore";
+import { useParams } from "react-router-dom";
 
 const ItemListContainer = ({ greeting }) => {
   const [products, setProducts] = useState(null);
+  const {categoryId} = useParams(); 
 
   useEffect(() => {
-    //apis, llamados al backend
-    const traerProductos = new Promise((res, rej) => {
-      setTimeout(() => {
-        res(productos);
-      },1500);
-    });
-
-    //console.log(traerProductos)
-    traerProductos
+    if (categoryId) {
+    traerProductosDeCategoria(categoryId)
+    .then((res) =>{
+      setProducts(res);
+    } )
+    .catch((error) => {
+        console.log(error);
+      });
+    } else {
+    traerProductos()
       .then((res) => {
-        //console.log(res)
         setProducts(res);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+    }
+  }, [categoryId]);
 
-  console.log(products);
 
   return (
     <div className="text-center container mx-auto mt-5">
