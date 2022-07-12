@@ -3,7 +3,7 @@ import ItemDetail from "../ItemDetail/ItemDetail";
 import { useParams } from "react-router-dom";
 import RotateLoader from 'react-spinners/RotateLoader'
 import ErrorMsg from "../ErrorMsg";
-import { traerUnProducto } from "../../services/firestore";
+import { traerUnProducto, exportDataToFirestore } from "../../services/firestore";
 
 const ItemDetailContainer = ({ greeting }) => {
   const [product, setProduct] = useState({});
@@ -19,6 +19,13 @@ const ItemDetailContainer = ({ greeting }) => {
       .then((res) => {
         setProduct(res);        
       })
+      .catch((error) => {
+        console.error(error);
+        setIsError(error.message);        
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   
   }, [itemId]);
 
@@ -35,11 +42,14 @@ const ItemDetailContainer = ({ greeting }) => {
  
   
   return (
+    <>
     <div className="text-center container mx-auto mt-5 h-screen">
       <div className="font-bold text-pink-600 text-4xl mb-2">{greeting}</div>  
       {isError && <ErrorMsg text={isError} />}     
       {product.id && <ItemDetail item={product} />}
     </div>
+    <button onClick={exportDataToFirestore}>Guardar Productos</button>
+    </>
   );
   
 };

@@ -1,6 +1,10 @@
 import { useContext } from "react";
 import cartContext from "../../context/CartContext";
 
+import { createBuyOrder } from "../../services/firestore";
+import CartForm from "./CartForm";
+
+
 function CartView() {
   const { removeItem, cart, clearCart, totalPriceCart } = useContext(cartContext);
 
@@ -32,8 +36,7 @@ function CartView() {
       <div>
         <p className="text-2x">Total a pagar: ${totalPriceCart().toFixed()}</p>
       </div>
-        <button className="bg-blue-500 py-2 px-8 rounded-md font-bold text-white mx-auto">Finalizar Compra</button>
-        <button onClick= {clearCart} className="bg-red-500 py-2 px-8 rounded-md font-bold text-white mx-auto">Vaciar Carrito</button>
+        <CartForm cart={cart} totalPriceCart={totalPriceCart} clearCart={clearCart} createBuyOrder={createBuyOrder} />
       
       </div>
     </>
